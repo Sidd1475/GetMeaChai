@@ -22,6 +22,18 @@ const Dashboard = () => {
     }, [])
 
 
+      useEffect(() => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+    (async () => {
+      const u = await fetchuser(session.user.name);
+      setForm(u || {});
+    })();
+  }, [session, router]);
+
+ 
    const handleSave = async (e) => {
     e.preventDefault(); // prevent form submission reload
 
@@ -29,7 +41,7 @@ const Dashboard = () => {
         const res = await updateProfile(e, session.user.name);  // this should do the saving
         if (res.success) {
             alert("Profile saved!");
-            router.push('/Yourpage');
+            router.push('{`/${session.user.name}`}');
         } else {
             alert("Failed to save profile");
         }
@@ -57,22 +69,24 @@ const Dashboard = () => {
     }
 
   const handleSubmit = async (e) => {
-  try {
-  const res = await updateProfile(form, session.user.name);
+      e.preventDefault();                 // stop default full‑page refresh
+    try {
+      const res = await updateProfile(form, session.user.name);
+      if (!res?.success) {
+        alert(`Failed to save profile: ${res?.message || "Unknown error"}`);
+        return;
+      }
 
-  if (res?.success) {
-    alert("Profile saved!");
-    router.push("/Yourpage");
-  } else {
-    alert(`Failed to save profile: ${res?.message || 'Unknown error'}`);
-  }
-} catch (err) {
-  console.error("Unhandled error:", err);
-  alert("Something went wrong!");
-}
+      alert("Profile saved!");
 
-  
-}
+      // decide which username to use in the URL
+      const username = form.username?.trim() || session.user.name;
+      router.push(`/${username}`);      // 👉 go to /siddharth140705 etc.
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong!");
+    }
+  };
 
 
 

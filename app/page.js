@@ -36,7 +36,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="bg-white h-1 opacity-10"></div>
+      {/* <div className="bg-white h-1 opacity-10"></div>
       <div className="text-white container mx-auto py-16">
         <h2 className="text-2xl font-bold text-center my-7">Know more</h2>
         <div className="flex gap-5 justify-around ">
@@ -56,7 +56,7 @@ export default function Home() {
             <p className="text-center">Your fans are available to help you </p>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
